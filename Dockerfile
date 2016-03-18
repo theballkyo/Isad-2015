@@ -4,7 +4,7 @@ FROM mhart/alpine-node:4
 # https://github.com/mhart/alpine-node
 
 WORKDIR /src
-ADD ./src* ./src
+ADD ./src/* ./src
 
 # If you have native dependencies, you'll need extra tools
 # RUN apk add --no-cache make gcc g++ python
@@ -15,4 +15,4 @@ RUN npm install
 # install Process Manager. For more information, see https://github.com/Unitech/pm2.
 RUN npm install pm2 -g
 EXPOSE 3000
-CMD ["pm2", "ecosystem.json"]
+CMD ["pm2", "start","ecosystem.json"]
