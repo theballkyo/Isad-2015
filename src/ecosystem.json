@@ -1,0 +1,12 @@
+﻿{
+  "apps": [
+    {
+      "name": "schoo-spacial",
+      "script": "bin/www",
+      "watch": true,
+      "log_date_format": "YYYY-MM-DD HH:mm Z",
+      "instances": 1,
+      "exec_mode":  "cluster"
+    }
+  ]
+}
