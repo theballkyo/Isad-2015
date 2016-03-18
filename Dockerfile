@@ -15,4 +15,4 @@ RUN npm install
 # install Process Manager. For more information, see https://github.com/Unitech/pm2.
 RUN npm install pm2 -g
 EXPOSE 3000
-CMD ["pm2", "start","ecosystem.json"]
+CMD ["pm2", "start", "--no-daemon", "ecosystem.json"]
