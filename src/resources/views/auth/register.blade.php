@@ -1,0 +1,45 @@
+@extends('layouts.main')
+
+@section('content')
+    <div class="row">
+        <div class="col s8">
+            <h4>Register</h4>
+            <form class="col s12" action="{{ url('/register') }}" method="post">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">account_circle</i>
+                        <input name="email" id="icon_prefix" type="text" class="validate">
+                        <label for="icon_prefix">email</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">vpn_key</i>
+                        <input name="password" id="icon_vpn_key" type="tel" class="validate">
+                        <label for="icon_vpn_key">Password</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">vpn_key</i>
+                        <input id="icon_vpn_key" type="tel" class="validate">
+                        <label for="icon_vpn_key">Password</label>
+                    </div>
+                    <button class="col s3 offset-s9 btn waves-effect waves-light right" type="submit" name="action">
+                        Login
+                        <i class="material-icons right">send</i>
+                    </button>
+                </div>
+                {!! csrf_field() !!}
+            </form>
+        </div>
+        <div class="col s4">
+            @if (count($errors) > 0)
+                <p>
+                <ul class="collection">
+                    @foreach ($errors->all() as $error)
+                        <li class="collection-item red accent-3 white-text">{{ $error }}</li>
+                    @endforeach
+                </ul>
+                </p>
+            @endif
+        </div>
+    </div>
+
+@endsection

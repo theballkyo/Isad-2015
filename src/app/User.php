@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -23,4 +24,38 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * Get all courses
+     *
+     * @return Illuminate\Database\Eloquent\Relations\Relation
+     */
+    public function courses()
+    {
+        $this->belongsToMany('App\Course');
+    }
+
+    /**
+     * Get all payments info
+     *
+     * @return Illuminate\Database\Eloquent\Relations\Relation
+     */
+    public function payments()
+    {
+        $this->hasMany('App\Payment');
+    }
+
+    public function getTextRole()
+    {
+        switch ($this->type) {
+            case 1:
+                return "สมาชิก";
+            case 2:
+                return "ผู้ดูแลห้องเรียน";
+            case 3:
+                return "อาจารย์";
+            default:
+                return "unknown";
+        }
+    }
 }

@@ -11,10 +11,20 @@
 |
  */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'HomeController@index');
 
 Route::group(['middleware' => ['web']], function () {
-    Route::get('/admin', 'AdminController@index');
+
+    Route::group(['middleware' => ['auth']], function() {
+        //  Route::get('');
+    });
+
+    Route::group(['middleware' => ['auth'], 'namespace' => 'Admin'], function () {
+        Route::get('/admin', 'AdminController@index');
+    });
+
 });
+
+Route::auth();
+
+Route::get('/home', 'HomeController@index');
