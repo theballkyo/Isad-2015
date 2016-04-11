@@ -58,4 +58,9 @@ class User extends Authenticatable
                 return "unknown";
         }
     }
+
+    public function teacher()
+    {
+        return $this->hasOne('App\Teacher');
+    }
 }
