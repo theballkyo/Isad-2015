@@ -22,7 +22,8 @@
                     <p>{{ $course->description }}</p>
                 </div>
                 <div class="card-action">
-                    Teacher: <a href="#">{{ $course->teacher->user->first_name }} {{ $course->teacher->user->last_name }}</a>
+                    อาจารย์: <a href="#">{{ $course->teacher->user->first_name }} {{ $course->teacher->user->last_name }}</a>
+                    ประเภทคอร์ส: <a href="#">{{ $course->getTextCourseType() }}</a>
                 </div>
                     <a class="btn-large waves-effect waves-light orange col s12" href="#">ลงทะเบียนเรียนเลย</a>
             </div>

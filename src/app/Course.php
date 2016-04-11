@@ -15,4 +15,16 @@ class Course extends Model
     {
         return $this->belongsTo('App\Teacher', 'teacher_id', 'user_id');
     }
+
+    public function getTextCourseType()
+    {
+        switch ($this->type) {
+            case 1:
+                return "สอนสด";
+            case 2:
+                return "วิดีโอ";
+            default:
+                return "ไม่พบในระบบ โปรดแจ้งผู้ดูแลระบบ";
+        }
+    }
 }
