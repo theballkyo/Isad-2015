@@ -28,7 +28,14 @@ class CourseController extends Controller
     public function getEnroll(Request $request, $course_id)
     {
         if(!Auth::user()->isStudent()) {
-            dd("Error, not student");
+            return dd("Error, not student");
         }
+        if(Auth::user()->has('courses', '=', $course_id)->first() != null) {
+            return dd('Errer, enrolled');
+        }
+
+        Auth::user()->courses()->attach($course_id);
+
+        return dd("Enroll success");
     }
 }
