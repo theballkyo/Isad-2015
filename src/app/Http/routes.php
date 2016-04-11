@@ -16,7 +16,7 @@ Route::get('/', 'HomeController@index');
 Route::group(['middleware' => ['web']], function () {
 
     Route::group(['middleware' => ['auth']], function() {
-        //  Route::get('');
+        Route::get('/enroll/{course_id}', 'Course\CourseController@getEnroll');
     });
 
     Route::group(['middleware' => ['auth'], 'namespace' => 'Admin'], function () {
