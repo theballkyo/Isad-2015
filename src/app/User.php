@@ -59,6 +59,10 @@ class User extends Authenticatable
         }
     }
 
+    public function isStudent() {
+        return $this->type == 1;
+    }
+
     public function teacher()
     {
         return $this->hasOne('App\Teacher');
