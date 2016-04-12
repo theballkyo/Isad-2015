@@ -34,7 +34,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::patch('/course/{course_id}', 'Course\CourseController@patchCourse');
 
     // Remove course
-    Route::delete('/course/{course_id}', 'Course\CourseController@patchCourse');
+    Route::delete('/course/{course_id}', 'Course\CourseController@deleteCourse');
 
     // Enroll course
     Route::post('/enroll/{course_id}', 'Course\CourseController@postEnroll');

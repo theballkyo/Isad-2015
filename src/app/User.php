@@ -63,6 +63,16 @@ class User extends Authenticatable
         return $this->type == 1;
     }
 
+    public function isManager()
+    {
+        return $this->type == 2;
+    }
+
+    public function isTeacher()
+    {
+        return $this->type == 3;
+    }
+
     public function teacher()
     {
         return $this->hasOne('App\Teacher');

@@ -27,4 +27,13 @@ class Course extends Model
                 return "ไม่พบในระบบ โปรดแจ้งผู้ดูแลระบบ";
         }
     }
+    /**
+     * Scope a query to only open courses.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeOpen($query)
+    {
+        return $query->where('is_open', 1);
+    }
 }
