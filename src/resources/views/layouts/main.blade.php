@@ -18,6 +18,11 @@
             <li><a href="{{ url('/login') }}">Login</a></li>
             <li><a href="{{ url('/register') }}">Register</a></li>
             @else
+                @if (Auth::user()->isManager())
+                    <li><a href="{{ url('/') }}">เข้าสู่หน้าจัดการ</a></li>
+                @elseif(Auth::user()->isStudent())
+                    <li><a href="{{ url('/') }}">ดูข้อมูลส่วนตัว</a></li>
+                @endif
                 <li><a href="#" class="dropdown-button" data-activates='user_info'>ยินดีต้อนรับ {{ Auth::user()->first_name }} {{ Auth::user()->last_name }} [{{ Auth::user()->getTextRole() }}]</a></li>
                 <!-- Dropdown Structure -->
                 <ul id='user_info' class='dropdown-content'>
