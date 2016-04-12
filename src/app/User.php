@@ -32,7 +32,7 @@ class User extends Authenticatable
      */
     public function courses()
     {
-        return $this->belongsToMany('App\Course');
+        return $this->belongsToMany('App\Course')->withPivot('id');
     }
 
     /**
@@ -42,7 +42,7 @@ class User extends Authenticatable
      */
     public function payments()
     {
-        $this->hasMany('App\Payment');
+        return $this->hasMany('App\Payment');
     }
 
     public function getTextRole()

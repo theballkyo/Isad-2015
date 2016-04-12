@@ -36,4 +36,9 @@ class Course extends Model
     {
         return $query->where('is_open', 1);
     }
+
+    public function payments()
+    {
+        return $this->hasMany('App\Payment');
+    }
 }

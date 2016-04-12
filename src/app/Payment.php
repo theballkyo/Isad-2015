@@ -15,4 +15,9 @@ class Payment extends Model
     {
         $this->hasOne('App\Course');
     }
+
+    public function scopeOwner($query)
+    {
+        $query->where('course_user_id', '=', auth()->user()->id);
+    }
 }

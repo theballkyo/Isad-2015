@@ -41,6 +41,12 @@ Route::group(['middleware' => ['web']], function () {
 
     // remove enroll course
     Route::delete('/enroll/{course_id}', 'Course\CourseController@deleteEnroll');
+
+    // Show courses has enroll
+    Route::get('/enroll', 'Course\CourseController@getEnroll');
+
+    // Show detail course is enroll
+    Route::get('/enroll/{course_id}', 'Course\CourseController@showEnroll');
 });
 
 Route::auth();

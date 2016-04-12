@@ -206,6 +206,43 @@ class CourseController extends Controller
     }
 
     /**
+     * View detail course is enroll.
+     *
+     * @param  Request $request
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getEnroll(Request $request)
+    {
+        $courses = $request->user()->load(['courses', 'payments']);
+        dd($courses);
+        return view('course.enroll.index', ['courses' => $courses]);
+    }
+
+    /**
+     * View detail course is enroll.
+     *
+     * @param  Request $request
+     * @param  int     $course_id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showEnroll(Request $request, $course_id)
+    {
+        $course = $request->user()->has('courses', '=', $course_id)->first();
+        $payment = $request->user()->load(['payment' => function($query) {
+            $query->owner();
+        }]);
+
+        if ($course == null) {
+            return dd('Errer, No enroll course');
+        }
+
+        $data = $request->user()->has('courses', '=', $course_id)->first();
+
+        return view('course.enroll.show', ['course' => $course]);
+    }
+    /**
      * Map a course object with request object
      *
      * @param  Request $request
