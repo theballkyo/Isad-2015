@@ -21,21 +21,41 @@ class CourseController extends Controller
     }
 
     /**
-     * enroll course
+     *
+     * View course
+     */
+    public function getCourse(Request $request, $course_id)
+    {
+        $course = Course::find($course_id);
+        if($course === null)
+        {
+            $request->session()->flash('type__', 'course');
+            return abort(404);
+
+        }
+        return view('course.enroll', ['course' => $course]);
+    }
+    /**
+     * store enroll course
      *
      * @return \Illuminate\Http\Response
      */
-    public function getEnroll(Request $request, $course_id)
+    public function postEnroll(Request $request, $course_id)
     {
-        if(!Auth::user()->isStudent()) {
+        if(!$request->user()->isStudent()) {
             return dd("Error, not student");
         }
-        if(Auth::user()->has('courses', '=', $course_id)->first() != null) {
+        if($request->user()->has('courses', '=', $course_id)->first() != null) {
             return dd('Errer, enrolled');
         }
 
-        Auth::user()->courses()->attach($course_id);
+        $request->user()->courses()->attach($course_id);
 
         return dd("Enroll success");
+    }
+
+    public function display404()
+    {
+
     }
 }

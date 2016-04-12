@@ -15,14 +15,32 @@ Route::get('/', 'HomeController@index');
 
 Route::group(['middleware' => ['web']], function () {
 
-    Route::group(['middleware' => ['auth']], function() {
-        Route::get('/enroll/{course_id}', 'Course\CourseController@getEnroll');
-    });
+    // View all courses
+    Route::get('/course', 'Course\CourseController@index');
 
-    Route::group(['middleware' => ['auth'], 'namespace' => 'Admin'], function () {
-        Route::get('/admin', 'AdminController@index');
-    });
+    // Show form new course
+    Route::get('/course/create', 'Course\CourseController@getCourseCreate');
 
+    // Store new course
+    Route::post('/course/create', 'Course\CourseController@postCourseCreate');
+
+    // View course
+    Route::get('/course/{course_id}', 'Course\CourseController@getCourse');
+
+    // View edit course
+    Route::get('/course/{course_id}/edit', 'Course\CourseController@getCourseEdit');
+
+    // Edit course
+    Route::patch('/course/{course_id}', 'Course\CourseController@patchCourse');
+
+    // Remove course
+    Route::delete('/course/{course_id}', 'Course\CourseController@patchCourse');
+
+    // Enroll course
+    Route::post('/enroll/{course_id}', 'Course\CourseController@postEnroll');
+
+    // remove enroll course
+    Route::delete('/enroll/{course_id}', 'Course\CourseController@deleteEnroll');
 });
 
 Route::auth();
