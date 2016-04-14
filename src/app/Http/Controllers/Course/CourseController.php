@@ -32,9 +32,9 @@ class CourseController extends Controller
     {
         $courses = Course::with('teacher.user')->open()->get();
 
-        return dd($courses);
+       // return dd($courses);
 
-        return view('course.index');
+        return view('course.index', ['courses' => $courses]);
     }
 
     /**
@@ -207,7 +207,7 @@ class CourseController extends Controller
      */
     public function getEnroll(Request $request)
     {
-        $enrolls = Enroll::owner()->get();
+        $enrolls = Enroll::owner()->with('course', 'payment')->get();
 
         return view('course.enroll.index', ['enrolls' => $enrolls]);
     }

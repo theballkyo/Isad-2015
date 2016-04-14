@@ -32,7 +32,7 @@ class User extends Authenticatable
      */
     public function courses()
     {
-        return $this->belongsToMany('App\Course')->withPivot('id');
+        return $this->belongsToMany('App\Course', 'enrolls');
     }
 
     public function enrolls()

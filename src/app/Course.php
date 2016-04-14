@@ -25,7 +25,7 @@ class Course extends Model
     {
         return $this->hasMany('App\Enroll');
     }
-    
+
     public function getTextCourseType()
     {
         switch ($this->type) {
@@ -51,5 +51,10 @@ class Course extends Model
     public function hasUser($id)
     {
         return $this->users->contains('id', $id);
+    }
+
+    public function isPayment($user_id)
+    {
+        return $this->enrolls->where('user_id', $user_id)->first()->payment->status == 1;
     }
 }
