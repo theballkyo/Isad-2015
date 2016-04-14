@@ -207,9 +207,9 @@ class CourseController extends Controller
      */
     public function getEnroll(Request $request)
     {
-        $enrolls = Enroll::owner()->with('course', 'payment')->get();
+        $courses = auth()->user()->load('courses')->courses;
 
-        return view('course.enroll.index', ['enrolls' => $enrolls]);
+        return view('course.index', ['courses' => $courses]);
     }
 
     /**
