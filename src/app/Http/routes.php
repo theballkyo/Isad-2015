@@ -46,7 +46,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/enroll', 'Course\CourseController@getEnroll');
 
     // Show detail course is enroll
-    Route::get('/enroll/{course_id}', 'Course\CourseController@showEnroll');
+    Route::get('/enroll/{enroll_id}', 'Course\CourseController@showEnroll');
 });
 
 Route::auth();

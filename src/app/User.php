@@ -35,6 +35,11 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Course')->withPivot('id');
     }
 
+    public function enrolls()
+    {
+        return $this->hasMany('App\Enroll');
+    }
+
     /**
      * Get all payments info
      *
@@ -43,6 +48,11 @@ class User extends Authenticatable
     public function payments()
     {
         return $this->hasMany('App\Payment');
+    }
+
+    public function teacher()
+    {
+        return $this->hasOne('App\Teacher');
     }
 
     public function getTextRole()
@@ -59,7 +69,8 @@ class User extends Authenticatable
         }
     }
 
-    public function isStudent() {
+    public function isStudent()
+    {
         return $this->type == 1;
     }
 
@@ -73,8 +84,8 @@ class User extends Authenticatable
         return $this->type == 3;
     }
 
-    public function teacher()
+    public function hasCourse($id)
     {
-        return $this->hasOne('App\Teacher');
+        return $this->courses->contains('id', $id);
     }
 }

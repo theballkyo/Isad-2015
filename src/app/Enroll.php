@@ -8,19 +8,28 @@ class Enroll extends Model
 {
     protected $table = 'course_user';
 
-    public function payments()
+    public function payment()
     {
-        return $this->hasMany('App\Payment');
+        return $this->hasOne('App\Payment');
     }
 
-    public function isEnroll()
+    public function user()
+    {
+        return $this->hasOne('App\User');
+    }
+
+    public function course()
+    {
+        return $this->hasOne('App\Course');
+    }
+
+    public function scopeOwner($query)
+    {
+        return $query->where('user_id', Auth::user()->id);
+    }
+
+    public function isOwner()
     {
         return $this->user_id == Auth::user()->id;
     }
-
-    public function scopeOnlyUser($query, $id)
-    {
-        return $query->where('user_id', $id);
-    }
-    
 }

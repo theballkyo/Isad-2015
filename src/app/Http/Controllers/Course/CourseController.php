@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Course;
 
+use App\Enroll;
 use Auth;
 use App\Course;
 use App\Http\Requests;
@@ -62,8 +63,7 @@ class CourseController extends Controller
 
         $teacher = Teacher::where('teacher_id', '=', $request->teacher_id)->first();
 
-        if($teacher == null)
-        {
+        if ($teacher == null) {
             // error !?
         }
 
@@ -80,13 +80,13 @@ class CourseController extends Controller
      * View course.
      *
      * @param  Request $request
-     * @param  int     $course_id
+     * @param  int $course_id
      *
      * @return \Illuminate\Http\Response
      */
     public function getCourse(Request $request, $course_id)
     {
-        $course = Course::where('id', $course_id)->with('enroll')->first();
+        $course = Course::where('id', $course_id)->with('users', 'teacher', 'rooms')->first();
         if ($course === null) {
             $request->session()->flash('type__', 'course');
             return abort(404);
@@ -99,7 +99,7 @@ class CourseController extends Controller
      * Show form to edit course.
      *
      * @param  Request $request
-     * @param  int     $course_id
+     * @param  int $course_id
      *
      * @return \Illuminate\Http\Response
      */
@@ -118,7 +118,7 @@ class CourseController extends Controller
      * Store course is edit.
      *
      * @param  Request $request
-     * @param  int     $course_id
+     * @param  int $course_id
      *
      * @return \Illuminate\Http\Response
      */
@@ -132,7 +132,7 @@ class CourseController extends Controller
 
         $this->validator($request);
 
-        $this->mapCourse($request, $course_id);
+        $course = $this->mapCourse($request, $course_id);
 
         $course->save();
 
@@ -143,7 +143,7 @@ class CourseController extends Controller
      * Delete course.
      *
      * @param  Request $request
-     * @param  int     $course_id
+     * @param  int $course_id
      *
      * @return \Illuminate\Http\Response
      */
@@ -164,17 +164,13 @@ class CourseController extends Controller
      * store enroll course
      *
      * @param  Request $request
-     * @param  int     $course_id
+     * @param  int $course_id
      *
      * @return \Illuminate\Http\Response
      */
     public function postEnroll(Request $request, $course_id)
     {
-        if (!$request->user()->isStudent()) {
-            return dd("Error, not student");
-        }
-
-        if ($request->user()->has('courses', '=', $course_id)->first() != null) {
+        if ($request->user()->hasCourse($course_id)) {
             return dd('Errer, enrolled');
         }
 
@@ -187,17 +183,13 @@ class CourseController extends Controller
      * Cancel enroll course
      *
      * @param  Request $request
-     * @param  int     $course_id
+     * @param  int $course_id
      *
      * @return \Illuminate\Http\Response
      */
     public function deleteEnroll(Request $request, $course_id)
     {
-        if (!$request->user()->isStudent()) {
-            return dd("Error, not student");
-        }
-
-        if ($request->user()->has('courses', '=', $course_id)->first() != null) {
+        if ($request->user()->hasCourse($course_id)) {
             return dd('Errer, enrolled');
         }
 
@@ -215,45 +207,42 @@ class CourseController extends Controller
      */
     public function getEnroll(Request $request)
     {
-        $courses = $request->user()->load(['courses', 'payments']);
-        dd($courses);
-        return view('course.enroll.index', ['courses' => $courses]);
+        $enrolls = Enroll::owner()->get();
+
+        return view('course.enroll.index', ['enrolls' => $enrolls]);
     }
 
     /**
      * View detail course is enroll.
      *
      * @param  Request $request
-     * @param  int     $course_id
+     * @param  int $enroll_id
      *
      * @return \Illuminate\Http\Response
      */
-    public function showEnroll(Request $request, $course_id)
+    public function showEnroll(Request $request, $enroll_id)
     {
-        $course = $request->user()->has('courses', '=', $course_id)->first();
-        $payment = $request->user()->load(['payment' => function($query) {
-            $query->owner();
-        }]);
+        $enroll = Enroll::where($enroll_id)->owner()->get();
 
-        if ($course == null) {
-            return dd('Errer, No enroll course');
+        if ($enroll == null) {
+            // Null
+
         }
-
-        $data = $request->user()->has('courses', '=', $course_id)->first();
 
         return view('course.enroll.show', ['course' => $course]);
     }
+
     /**
      * Map a course object with request object
      *
      * @param  Request $request
-     * @param  Course  $course
+     * @param  App\Course $course
      *
-     * @return void
+     * @return App\Course
      */
     public function mapCourse($request, $course)
     {
-
+        return $course;
     }
 
     /**

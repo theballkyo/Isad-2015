@@ -16,6 +16,16 @@ class Course extends Model
         return $this->belongsTo('App\Teacher', 'teacher_id', 'user_id');
     }
 
+    public function users()
+    {
+        return $this->belongsToMany('App\User', 'enrolls');
+    }
+
+    public function enrolls()
+    {
+        return $this->hasMany('App\Enroll');
+    }
+    
     public function getTextCourseType()
     {
         switch ($this->type) {
@@ -38,18 +48,8 @@ class Course extends Model
         return $query->where('is_open', 1);
     }
 
-    public function payments()
-    {
-        return $this->hasMany('App\Payment');
-    }
-
-    public function enroll()
-    {
-        return $this->hasMany('App\Enroll');
-    }
-
     public function hasUser($id)
     {
-        return $this->enroll->contains('user_id', $id);
+        return $this->users->contains('id', $id);
     }
 }
