@@ -86,12 +86,13 @@ class CourseController extends Controller
      */
     public function getCourse(Request $request, $course_id)
     {
-        $course = Course::find($course_id);
+        $course = Course::where('id', $course_id)->with('enroll')->first();
         if ($course === null) {
             $request->session()->flash('type__', 'course');
             return abort(404);
         }
-        return view('course.enroll', ['course' => $course]);
+
+        return view('course.show', ['course' => $course]);
     }
 
     /**

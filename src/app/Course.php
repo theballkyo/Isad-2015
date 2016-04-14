@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Course extends Model
 {
-    public function room()
+    public function rooms()
     {
         return $this->belongsToMany('App\Room');
     }
@@ -27,6 +27,7 @@ class Course extends Model
                 return "ไม่พบในระบบ โปรดแจ้งผู้ดูแลระบบ";
         }
     }
+
     /**
      * Scope a query to only open courses.
      *
@@ -40,5 +41,15 @@ class Course extends Model
     public function payments()
     {
         return $this->hasMany('App\Payment');
+    }
+
+    public function enroll()
+    {
+        return $this->hasMany('App\Enroll');
+    }
+
+    public function hasUser($id)
+    {
+        return $this->enroll->contains('user_id', $id);
     }
 }
