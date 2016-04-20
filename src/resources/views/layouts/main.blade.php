@@ -15,15 +15,20 @@
     <div class="nav-wrapper container"><a id="logo-container" href="{{ url('/') }}" class="brand-logo">School</a>
         <ul class="right hide-on-med-and-down">
             @if (Auth::guest())
-            <li><a href="{{ url('/login') }}">Login</a></li>
-            <li><a href="{{ url('/register') }}">Register</a></li>
+                <li><a href="{{ url('/login') }}">Login</a></li>
+                <li><a href="{{ url('/register') }}">Register</a></li>
             @else
                 @if (Auth::user()->isManager())
                     <li><a href="{{ url('/') }}">เข้าสู่หน้าจัดการ</a></li>
                 @elseif(Auth::user()->isStudent())
                     <li><a href="{{ url('/') }}">ดูข้อมูลส่วนตัว</a></li>
+                @elseif(auth()->user()->isTeacher())
+                    <li><a href="{{ url('/') }}">เข้าสู่หน้าจัดการ</a> </li>
+                    <li><a href="{{ url('/') }}">ดูตารางสอน</a></li>
                 @endif
-                <li><a href="#" class="dropdown-button" data-activates='user_info'>ยินดีต้อนรับ {{ Auth::user()->first_name }} {{ Auth::user()->last_name }} [{{ Auth::user()->getTextRole() }}]</a></li>
+                <li><a href="#" class="dropdown-button"
+                       data-activates='user_info'>ยินดีต้อนรับ {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
+                        [{{ Auth::user()->getTextRole() }}]</a></li>
                 <!-- Dropdown Structure -->
                 <ul id='user_info' class='dropdown-content'>
                     <li><a href="{{ url('/logout') }}">ออกจากระบบ</a></li>
@@ -32,8 +37,8 @@
         </ul>
 
         <ul id="nav-mobile" class="side-nav">
-            <li><a href="{{ url('/login') }}">Login</a></li>
-            <li><a href="{{ url('/register') }}">Register</a></li>
+            <li><a href="{{ url('/login') }}">เข้าสู่ระบบ</a></li>
+            <li><a href="{{ url('/register') }}">สมัครสมาชิก</a></li>
         </ul>
         <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
     </div>
@@ -51,7 +56,9 @@
         <div class="row">
             <div class="col l6 s12">
                 <h5 class="white-text">Company Bio</h5>
-                <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's our full time job. Any amount would help support and continue development on this project and is greatly appreciated.</p>
+                <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's
+                    our full time job. Any amount would help support and continue development on this project and is
+                    greatly appreciated.</p>
 
 
             </div>
@@ -77,7 +84,7 @@
     </div>
     <div class="footer-copyright">
         <div class="container">
-            Made by <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+            {{ PHP_Timer::resourceUsage() }}
         </div>
     </div>
 </footer>

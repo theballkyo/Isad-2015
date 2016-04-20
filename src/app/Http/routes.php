@@ -10,45 +10,46 @@
 | and give it the controller to call when that URI is requested.
 |
  */
-
 Route::get('/', 'HomeController@index');
+// View all courses
+Route::get('/course', 'Course\CourseController@index');
 
-Route::group(['middleware' => ['web']], function () {
+// Show form new course
+Route::get('/course/create', 'Course\CourseController@getCourseCreate');
 
-    // View all courses
-    Route::get('/course', 'Course\CourseController@index');
+// Store new course
+Route::post('/course/create', 'Course\CourseController@postCourseCreate');
 
-    // Show form new course
-    Route::get('/course/create', 'Course\CourseController@getCourseCreate');
+// View course
+Route::get('/course/{course_id}', 'Course\CourseController@getCourse');
 
-    // Store new course
-    Route::post('/course/create', 'Course\CourseController@postCourseCreate');
+// View edit course
+Route::get('/course/{course_id}/edit', 'Course\CourseController@getCourseEdit');
 
-    // View course
-    Route::get('/course/{course_id}', 'Course\CourseController@getCourse');
+// Edit course
+Route::patch('/course/{course_id}', 'Course\CourseController@patchCourse');
 
-    // View edit course
-    Route::get('/course/{course_id}/edit', 'Course\CourseController@getCourseEdit');
+// Remove course
+Route::delete('/course/{course_id}', 'Course\CourseController@deleteCourse');
 
-    // Edit course
-    Route::patch('/course/{course_id}', 'Course\CourseController@patchCourse');
+// Enroll course
+Route::post('/enroll/{course_id}', 'Course\CourseController@postEnroll');
 
-    // Remove course
-    Route::delete('/course/{course_id}', 'Course\CourseController@deleteCourse');
+// remove enroll course
+Route::delete('/enroll/{course_id}', 'Course\CourseController@deleteEnroll');
 
-    // Enroll course
-    Route::post('/enroll/{course_id}', 'Course\CourseController@postEnroll');
+// Show courses has enroll
+Route::get('/enroll', 'Course\CourseController@getEnroll');
 
-    // remove enroll course
-    Route::delete('/enroll/{course_id}', 'Course\CourseController@deleteEnroll');
+Route::get('/payment', 'Payment\PaymentController@index');
 
-    // Show courses has enroll
-    Route::get('/enroll', 'Course\CourseController@getEnroll');
+Route::get('/payment/{enroll_id}', 'Payment\PaymentController@getPayment');
 
-    // Show detail course is enroll
-    Route::get('/enroll/{enroll_id}', 'Course\CourseController@showEnroll');
-});
+Route::get('payment/{enroll_id}/new', 'Payment\PaymentController@newPayment');
+
+Route::post('payment', 'Payment\PaymentController@savePayment');
 
 Route::auth();
 
 Route::get('/home', 'HomeController@index');
+

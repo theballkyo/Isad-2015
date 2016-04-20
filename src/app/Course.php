@@ -26,6 +26,16 @@ class Course extends Model
         return $this->hasMany('App\Enroll');
     }
 
+    /**
+     * Get enroll of user
+     *
+     * @return mixed
+     */
+    public function enroll()
+    {
+        return $this->hasOne('App\Enroll');
+    }
+    
     public function getTextCourseType()
     {
         switch ($this->type) {
@@ -47,7 +57,7 @@ class Course extends Model
     {
         return $query->where('is_open', 1);
     }
-
+    
     public function hasUser($id)
     {
         return $this->users->contains('id', $id);
@@ -55,6 +65,6 @@ class Course extends Model
 
     public function isPayment($user_id)
     {
-        return $this->enrolls->where('user_id', $user_id)->first()->payment->status == 1;
+        return $this->enrolls->where('user_id', $user_id)->first()->isPayment();
     }
 }

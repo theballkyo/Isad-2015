@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Course;
+use App\CourseComponents\GetCoursesWithOneUser;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
+    use GetCoursesWithOneUser;
     /**
      * Create a new controller instance.
      *
@@ -25,8 +27,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $courses = Course::with('teacher.user')->get();
-       // dd($courses);
-        return view('home', ['courses' => $courses]);
+        return view('home', ['courses' => $this->getCoursesWithOneUser($this->getUserId())]);
     }
 }

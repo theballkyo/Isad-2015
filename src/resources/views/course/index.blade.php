@@ -2,9 +2,7 @@
 
 @section('content')
     <div class="row">
-        @foreach($courses as $course)
-            @include('course.show_card', ['course' => $course])
-        @endforeach
+        @include('course.show_card')
     </div>
 
 @endsection

@@ -40,7 +40,7 @@
     <body>
         <div class="container">
             <div class="content">
-                <div class="title">{{ session('type__') }}</div>
+                <div class="title">404 Not Found.</div>
             </div>
         </div>
     </body>
