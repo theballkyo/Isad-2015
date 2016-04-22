@@ -26,7 +26,10 @@ class CourseController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['index', 'getCourse']]);
+        $this->middleware('student', ['except' => ['index', 'getCourse']]);
+        $this->middleware('manager', ['only' => ['getCourseCreate', 'postCourseCreate', 'getCourseEdit',
+            'patchCourse', 'getCourseDelete', 'deleteCourse', 'getCourseManage']]);
+        //$this->middleware('member', ['only' => []]);
     }
 
     /**
@@ -68,9 +71,18 @@ class CourseController extends Controller
      */
     public function postCourseCreate(CreateCourseRequest $request)
     {
-        // dd($request->all());
+        $on_day = [];
+        for ($i = 0; $i <= 6; $i++) {
+            if (in_array($i, $request->on_day)) {
+                $on_day[] = 1;
+            } else {
+                $on_day[] = 0;
+            }
+        }
+
         $course = new Course();
         $course->fill($request->all());
+        $course->on_day = $on_day;
         $course->save();
 
         foreach ($request->room_id as $room) {
@@ -80,7 +92,9 @@ class CourseController extends Controller
             // $course->save();
         }
 
-        $request->file('img')->move("imgs/courses/", $course->id . '.jpg');
+        if ($request->hasFile('img')) {
+            $request->file('img')->move("imgs/courses/", $course->id . '.jpg');
+        }
 
         return redirect()->action('Course\CourseController@getCourse', ['course_id' => $course->id]);
     }
@@ -132,16 +146,34 @@ class CourseController extends Controller
      */
     public function patchCourse(CreateCourseRequest $request, $course_id)
     {
+        $on_day = [];
+        for ($i = 0; $i <= 6; $i++) {
+            if (in_array($i, $request->on_day)) {
+                $on_day[] = 1;
+            } else {
+                $on_day[] = 0;
+            }
+        }
         $course = Course::find($course_id);
 
         $course->fill($request->all());
+        $course->on_day = $on_day;
         $course->save();
         if ($request->room_id != null) {
             $course->rooms()->sync($request->room_id);
         }
         $course->save();
-
+        if ($request->hasFile('img')) {
+            $request->file('img')->move("imgs/courses/", $course->id . '.jpg');
+        }
         return back()->with(['msg' => 'บันทึกข้อมูลเรียบร้อยแล้ว']);
+    }
+
+    public function getCourseDelete(Request $request, $course_id)
+    {
+        $course = Course::findOrFail($course_id);
+        $course->delete();
+        return back()->with(['msg' => 'ลบคอร์สเรียบร้อยแล้ว']);
     }
 
     /**

@@ -37,13 +37,14 @@ class Kernel extends HttpKernel
         'auth' => [
             \App\Http\Middleware\Authenticate::class,
         ],
-        'staff' => [
-            \App\Http\Middleware\StaffCheck::class,
+        'manager' => [
+            \App\Http\Middleware\ManagerCheck::class,
         ],
 
         'admin' => [
-
+            \App\Http\Middleware\AdminCheck::class,
         ],
+
     ];
 
     /**
@@ -59,5 +60,10 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Foundation\Http\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'admin' => \App\Http\Middleware\AdminCheck::class,
+        'teacher' => \App\Http\Middleware\TeacherCheck::class,
+        'manager' => \App\Http\Middleware\ManagerCheck::class,
+        'owner' => \App\Http\Middleware\OwnerCheck::class,
+        'student' => \App\Http\Middleware\StudentCheck::class,
     ];
 }

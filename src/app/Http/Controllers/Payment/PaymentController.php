@@ -16,6 +16,7 @@ class PaymentController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('manager', ['except' => ['newPayment', 'savePayment']]);
     }
 
     public function index()

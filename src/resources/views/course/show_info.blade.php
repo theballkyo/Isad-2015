@@ -26,8 +26,12 @@
                 ราคา: {{ $course->price }} บาท || จำนวนการลงทะเบียนเรียน {{ $course->users->count() }}
                 / {{ $course->max_user }} คน
             </div>
+            <div class="card-action">
+                เริ่มเรียน {{ $course->start_at }} - {{ $course->end_at }} || เวลาเรียน {{ $course->start_time }} - {{ $course->end_time }}
+            </div>
             @if(!auth()->guest())
-                @if($course->enroll != null)
+                @if(!auth()->user()->isStudent())
+                @elseif($course->enroll != null)
                     @if($course->enroll->isApprove())
                         <a href="#"
                            class="btn-large waves-effect waves-light light-green col s12">ชำระเงินเรียนร้อยแล้ว</a>

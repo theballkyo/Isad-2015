@@ -12,21 +12,6 @@
  */
 Route::get('/', 'HomeController@index');
 
-// Edit course
-Route::patch('/course/{course_id}', 'Course\CourseController@patchCourse');
-
-// Remove course
-Route::delete('/course/{course_id}', 'Course\CourseController@deleteCourse');
-Route::post('/enroll/{course_id}/delete', 'Course\CourseController@deleteEnroll');
-// Enroll course
-Route::post('/enroll/{course_id}', 'Course\CourseController@postEnroll');
-
-Route::get('/enroll/{enroll_id}', 'Course\CourseController@showEnroll');
-\
-// Show courses has enroll
-Route::get('/enroll', 'Course\CourseController@getEnroll');
-
-
 
 Route::group(['namespace' => 'Payment'], function () {
 
@@ -38,42 +23,62 @@ Route::group(['namespace' => 'Payment'], function () {
     Route::get('/payment/{enroll_id}/reject', 'PaymentController@reject');
     Route::get('/payment/{enroll_id}', 'PaymentController@getPayment');
 
+
 });
 
 Route::group(['namespace' => 'Course'], function () {
 
-    # Room route
-    Route::get('/room', 'RoomController@index');
-    Route::get('/room/create', 'RoomController@getCreate');
-    Route::get('/room/manage', 'RoomController@getManage');
-    Route::get('/room/{room_id}', 'RoomController@getRoom');
-    Route::get('/course', 'CourseController@index');
-    Route::get('/course/create', 'CourseController@getCourseCreate');
-    Route::post('/course/create', 'CourseController@postCourseCreate');
     Route::get('/course/manage', 'CourseController@getCourseManage');
-    Route::get('/course/{course_id}', 'CourseController@getCourse');
     Route::get('/course/{course_id}/edit', 'CourseController@getCourseEdit');
     Route::patch('/course/{course_id}/edit', 'CourseController@patchCourse');
+    Route::get('/course/{course_id}/delete', 'CourseController@getCourseDelete');
     Route::get('/course/{course_id}/room', 'RoomController@getCourseRoom');
     Route::get('/course/{course_id}/{room_id}', 'RoomController@viewCourseRoom');
     Route::post('/course/{course_id}/{room_id}', 'RoomController@saveSeat');
     Route::delete('/course/{course_id}/{room_id}', 'RoomController@deleteSeat');
+    Route::get('/course', 'CourseController@index');
+    # Room route
+    Route::get('/course/create', 'CourseController@getCourseCreate');
+    Route::post('/course/create', 'CourseController@postCourseCreate');
+
+    Route::get('/room/create', 'RoomController@getCreate');
+    Route::post('/room/create', 'RoomController@postCreate');
+    Route::get('/room/manage', 'RoomController@getManage');
+    Route::get('/room/{room_id}/edit', 'RoomController@getRoomEdit');
+    Route::post('/room/{room_id}/edit', 'RoomController@postRoomEdit');
+    Route::get('/room/{room_id}/delete', 'RoomController@getRoomDelete');
+
+    Route::get('/room/{room_id}', 'RoomController@getRoom');
+
+    Route::get('/course/{course_id}', 'CourseController@getCourse');
+
+    Route::post('/enroll/{course_id}', 'CourseController@postEnroll');
+    Route::get('/enroll/{enroll_id}', 'CourseController@showEnroll');
+    Route::get('/enroll', 'CourseController@getEnroll');
+
 });
 
 Route::group(['namespace' => 'Member'], function () {
+
     # Member Zone
     Route::get('/member', 'MemberController@index')->name('member');
+    Route::get('/manager', 'MemberController@indexManager')->name('manager');
+    Route::get('/manager/teacher', 'MemberController@getTeacher');
     Route::get('/member/profile', 'MemberController@showProfile')->name('profile');
-    Route::get('/member/manage', 'MemberController@getManage');
+    Route::post('/member/profile', 'MemberController@saveProfile');
     Route::get('/member/create', 'MemberController@getCreate');
     Route::post('/member/create', 'MemberController@postCreate');
+    Route::get('/member/manage', 'MemberController@getManage');
     Route::get('/member/{user_id}/edit', 'MemberController@getEdit');
-    Route::patch('/member/{user_id}/edit', 'MemberController@patch');
-    Route::get('/manager', 'MemberController@indexManager')->name('manager');
+    Route::post('/member/{user_id}/edit', 'MemberController@postEdit');
+    Route::get('/member/{user_id}/delete', 'MemberController@getDelete');
+
+
 });
+Route::get('/timetable', 'HomeController@timetable');
+Route::get('/timetable/{teacher_id}', 'HomeController@timetableById');
 
 Route::auth();
-
 Route::get('/home', 'HomeController@index');
 
 Route::get('/generate', function () {

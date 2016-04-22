@@ -13,13 +13,14 @@
                     </div>
                     <div class="input-field col s12">
                         <i class="material-icons prefix">vpn_key</i>
-                        <input name="password" id="icon_vpn_key" type="tel" class="validate">
+                        <input name="password" id="icon_vpn_key" type="password" class="validate">
                         <label for="icon_vpn_key">Password</label>
                     </div>
                     <button class="col s3 offset-s9 btn waves-effect waves-light right" type="submit" name="action">
-                        Login
+                        เข้าสู่ระบบ
                         <i class="material-icons right">send</i>
                     </button>
+                    <a href="{{ url('/register') }}" class="col s3 offset-s9 btn waves-effect waves-light green right">หรือสมัครสมาชิกได้ที่นี้</a>
                 </div>
                 {!! csrf_field() !!}
             </form>

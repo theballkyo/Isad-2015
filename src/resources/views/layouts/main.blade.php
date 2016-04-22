@@ -11,6 +11,7 @@
     <link href="{{ asset('css/sweetalert.css') }}" type="text/css" rel="stylesheet" media="screen,projection"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('css/flatpickr.min.css') }}">
     <link href="{{ asset('css/jquery.seat-charts.css') }}" rel="stylesheet" />
+    <link href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.min.css" rel="stylesheet" type="text/css" />
     <link href="{{ asset('css/style.css') }}" type="text/css" rel="stylesheet" media="screen,projection"/>
 </head>
 <body>

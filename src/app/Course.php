@@ -71,4 +71,8 @@ class Course extends Model
     {
         return $this->enrolls->where('user_id', $user_id)->first()->isPayment();
     }
+
+    protected $casts = [
+        'on_day' => 'array',
+    ];
 }

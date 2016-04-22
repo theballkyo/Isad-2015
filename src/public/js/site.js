@@ -40,12 +40,12 @@ var payment = function ($id) {
 
 var deleteEnroll = function ($id) {
     swal({
-        title: "Are you sure?",
-        text: "You will not be able to recover this imaginary file!",
+        title: "คุณต้องการยกเลิก",
+        text: "คุณต้องการยกเลิกคอร์สนี้หรือไม่",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#DD6B55",
-        confirmButtonText: "Yes, delete it!",
+        confirmButtonText: "ใช่",
         closeOnConfirm: false
     }, function () {
         $.post(SITE_URL + 'enroll/' + $id + '/delete', {_token: TOKEN}, function (data, status) {

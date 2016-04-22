@@ -15,8 +15,8 @@
             <tr>
                 <td>{{ $room->id }}</td>
                 <td>{{ $room->title }}</td>
-                <td><a class="btn green" href="{{ url('/course/' . $room->id . '/edit') }}">แก้ไข</a></td>
-                <td><a class="btn red" href="{{ url('/course/' . $room->id . '/delete') }}">ลบ</a></td>
+                <td><a class="btn green" href="{{ url('/room/' . $room->id . '/edit') }}">แก้ไข</a></td>
+                <td><a class="btn red" href="{{ url('/room/' . $room->id . '/delete') }}">ลบ</a></td>
             </tr>
 
         @endforeach

@@ -1,45 +1,51 @@
 @extends('layouts.main')
 
 @section('content')
-    <div class="row">
-        <div class="col s8">
-            <h4>Register</h4>
-            <form class="col s12" action="{{ url('/register') }}" method="post">
-                <div class="row">
-                    <div class="input-field col s12">
-                        <i class="material-icons prefix">account_circle</i>
-                        <input name="email" id="icon_prefix" type="text" class="validate">
-                        <label for="icon_prefix">email</label>
-                    </div>
-                    <div class="input-field col s12">
-                        <i class="material-icons prefix">vpn_key</i>
-                        <input name="password" id="icon_vpn_key" type="tel" class="validate">
-                        <label for="icon_vpn_key">Password</label>
-                    </div>
-                    <div class="input-field col s12">
-                        <i class="material-icons prefix">vpn_key</i>
-                        <input id="icon_vpn_key" type="tel" class="validate">
-                        <label for="icon_vpn_key">Password</label>
-                    </div>
-                    <button class="col s3 offset-s9 btn waves-effect waves-light right" type="submit" name="action">
-                        Login
-                        <i class="material-icons right">send</i>
-                    </button>
-                </div>
-                {!! csrf_field() !!}
-            </form>
+    <form class="col s12" method="post">
+        <div class="row">
+            <div class="input-field col s4">
+                <input placeholder="อีเมล์" type="text" name="email" id="email">
+                <label for="email">อีเมล์</label>
+            </div>
+            <div class="input-field col s4">
+                <input placeholder="ชื่อจริง" type="text" name="first_name" id="first_name">
+                <label for="first_name">ชื่อจริง</label>
+            </div>
+            <div class="input-field col s4">
+                <input placeholder="นามสกุล" type="text" name="last_name" id="last_name">
+                <label for="last_name">นามสกุล</label>
+            </div>
+            <div class="input-field col s6">
+                <input placeholder="บัตรประชาชน" type="text" name="id_card" id="id_card">
+                <label for="id_card">บัตรประชาชน</label>
+            </div>
+            <div class="input-field col s6">
+                <input placeholder="วันเกิด" type="text" name="birthday" id="birthday">
+                <label for="birthday">วันเกิด</label>
+            </div>
+            <div class="input-field col s6">
+                <input placeholder="โรงเรียน" type="text" name="school" id="school">
+                <label for="school">โรงเรียน</label>
+            </div>
+            <div class="input-field col s6">
+                <input placeholder="ระดับชั้น" type="text" name="level" id="level">
+                <label for="level">ระดับชั้น</label>
+            </div>
+            <div class="input-field col s12">
+                <textarea placeholder="ที่อยู่" class="materialize-textarea" name="address" id="address"></textarea>
+                <label for="address">ที่อยู่</label>
+            </div>
+            <div class="input-field col s6">
+                <input placeholder="รหัสผ่าน" type="password" name="password" id="password">
+                <label for="password">รหัสผ่าน</label>
+            </div>
+            <div class="input-field col s6">
+                <input placeholder="ยืนยันรหัสผ่าน" type="password" name="password_confirmation" id="password_confirmation">
+                <label for="password_confirmation">ยืนยันรหัสผ่าน</label>
+            </div>
+            <button class="btn-large blue waves-light waves-effect">สมัครสมาชิก</button>
         </div>
-        <div class="col s4">
-            @if (count($errors) > 0)
-                <p>
-                <ul class="collection">
-                    @foreach ($errors->all() as $error)
-                        <li class="collection-item red accent-3 white-text">{{ $error }}</li>
-                    @endforeach
-                </ul>
-                </p>
-            @endif
-        </div>
-    </div>
+        {!! csrf_field() !!}
+    </form>
 
 @endsection

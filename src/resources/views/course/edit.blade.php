@@ -49,6 +49,19 @@
                 </select>
                 <label>ประเภทคอร์ส</label>
             </div>
+            <div class="input-field col s12">
+                <select name="on_day[]" multiple>
+                    <option value="" disabled selected>เลือกวันที่ต้องเปิดสอน</option>
+                    <option {{ $course->on_day[1] == 1 ? 'selected' : '' }} name="on_day[]" value="1">จันทร์</option>
+                    <option {{ $course->on_day[2] == 1 ? 'selected' : '' }} name="on_day[]" value="2">อังคาร</option>
+                    <option {{ $course->on_day[3] == 1 ? 'selected' : '' }} name="on_day[]" value="3">พุธ</option>
+                    <option {{ $course->on_day[4] == 1 ? 'selected' : '' }} name="on_day[]" value="4">พฤหัส</option>
+                    <option {{ $course->on_day[5] == 1 ? 'selected' : '' }} name="on_day[]" value="5">ศุกร์</option>
+                    <option {{ $course->on_day[6] == 1 ? 'selected' : '' }} name="on_day[]" value="6">เสาร์</option>
+                    <option {{ $course->on_day[0] == 1 ? 'selected' : '' }} name="on_day[]" value="0">อาทิตย์</option>
+                </select>
+                <label>เลือกวันที่ต้องเปิดสอน</label>
+            </div>
             <div class="input-field col s6">
                 <input type="text" name="price" placeholder="ราคา" id="price" value="{{ $course->price }}"/>
                 <label for="price">ราคา</label>
@@ -58,16 +71,20 @@
                 <label for="max_user">จำนวนผู้เรียน</label>
             </div>
             <div class="input-field col s6">
+                <small>วันที่เริ่มเรียน</small>
                 <input  value="{{ $course->start_at }}" id="start_at" name="start_at" class="datepicker" placeholder="วันที่เริ่มเรียน" data-time_24hr=true data-inline="true" data-input>
             </div>
             <div class="input-field col s6">
+                <small>วันสุดท้ายที่เรียน</small>
                 <input value="{{ $course->end_at }}" id="end_at" name="end_at" class="datepicker" placeholder="วันสุดท้ายที่เรียน" data-time_24hr=true data-inline="true" data-input>
             </div>
 
             <div class="input-field col s6">
+                <small>เวลาเริ่มเรียน</small>
                 <input data-defaultDate="{{ \Carbon\Carbon::createFromFormat('H:i:s', $course->start_time)->toDateTimeString() }}" id="start_time" name="start_time" class="timepicker" placeholder="เวลาเริ่มเรียน" data-time_24hr=true data-inline="true" data-enabletime=true  data-nocalendar=true>
             </div>
             <div class="input-field col s6">
+                <small>เวลาเลิกเรียน</small>
                 <input data-defaultDate="{{ \Carbon\Carbon::createFromFormat('H:i:s', $course->end_time)->toDateTimeString() }}" id="end_time" name="end_time" class="timepicker" placeholder="เวลาเลิกเรียน" data-time_24hr=true data-inline="true" data-enabletime=true  data-nocalendar=true>
             </div>
 
@@ -84,8 +101,13 @@
     <script>
         $(document).ready(function () {
             $('select').material_select();
-            flatpickr('.datepicker')
             flatpickr('.timepicker', { dateFormat: 'H:i'});
+
+            var check_in = flatpickr("#start_at");
+            var check_out = flatpickr("#end_at");
+
+            check_in.set("onChange", function(d){ check_out.set( "minDate" , d ); });
+            check_out.set("onChange", function(d){ check_in.set( "maxDate" , d ); });
         });
     </script>
 @endsection

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SeatBookRequest;
 use App\Room;
 use App\SeatBook;
+use App\Http\Requests\RoomCreateRequest;
 use Illuminate\Http\Request;
 
 class RoomController extends Controller
@@ -14,6 +15,8 @@ class RoomController extends Controller
     public function __construct()
     {
         $this->middleware('auth', ['except' => ['viewCourseRoom', 'getRoom']]);
+        $this->middleware('manager', ['only' => ['getCreate', 'getManage', 'getRoomEdit', 'postRoomEdit', 'postCreate', 'getRoomDelete']]);
+        $this->middleware('student', ['only' => ['saveSeat', 'deleteSeat']]);
     }
 
     public function index()
@@ -40,11 +43,37 @@ class RoomController extends Controller
         return view('room.view', compact('room'));
     }
 
-    public function getCourseRoom(Request $request, $course_id)
+    public function getRoomEdit($room_id)
     {
-        $course = Course::find($course_id);
+        $room = Room::findOrFail($room_id);
 
-        dd($course->rooms);
+        return view('room.edit', compact('room'));
+    }
+
+    public function postRoomEdit(Request $request, $room_id)
+    {
+        $room = Room::findOrFail($room_id);
+
+        $room->title = $request->title;
+
+        $room->seat->pattern = $request->pattern;
+
+        $room->seat->save();
+        $room->save();
+
+        return redirect('/room/manage')->with('msg', 'แก้ไขห้องเรียนสำเร็จแล้ว');
+    }
+
+    public function postCreate(RoomCreateRequest $request)
+    {
+        $room = new Room;
+
+        $room->title = $request->title;
+        $room->save();
+
+        $room->seat()->create($request->all());
+
+        return redirect('/room/manage')->with('msg', 'แก้ไขห้องเรียนสำเร็จแล้ว');
     }
 
     public function viewCourseRoom(Request $request, $course_id, $room_id)
@@ -69,7 +98,9 @@ class RoomController extends Controller
     {
 
         $enroll = auth()->user()->enroll()->where('course_id', $course_id)->first();
-
+        if ($enroll == null) {
+            return back()->withErrors(['คุณไม่ได้ลงทะเบียนคอร์สนี้']);
+        }
         if ($enroll->seatBook != null) {
             return back()->withErrors(['คุณได้จองที่นั่งไปแล้ว']);
         }
@@ -94,5 +125,12 @@ class RoomController extends Controller
         $enroll->seatBook->delete();
 
         return back()->with(['msg' => 'ยกเลิกการจองเรียบร้อยแล้ว']);
+    }
+
+    public function getRoomDelete($room_id)
+    {
+        $room = Room::findOrFail($room_id);
+        $room->delete();
+        return back()->with(['msg' => 'ลบห้องเรียนสำเร็จ']);
     }
 }

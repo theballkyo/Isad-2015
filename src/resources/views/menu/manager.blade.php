@@ -2,6 +2,8 @@
     <li>
         <div class="collapsible-header active"><i class="material-icons">filter_drama</i><a
                     href="{{ url('/payment/wait') }}">รายการแจ้งชำระเงิน</a></div>
+        <div class="collapsible-header active"><i class="material-icons">filter_drama</i><a
+                    href="{{ url('/manager/teacher') }}">ดูตารางสอน</a></div>
     </li>
     <li>
         <div class="collapsible-header active"><i class="material-icons">filter_drama</i>จัดการคอร์สเรียน

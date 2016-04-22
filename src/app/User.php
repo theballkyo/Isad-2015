@@ -13,7 +13,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'password',
+        'first_name', 'last_name', 'email', 'password', 'birthday', 'id_card', 'type', 'address'
     ];
 
     /**
@@ -74,9 +74,19 @@ class User extends Authenticatable
         return $this->type == 1;
     }
 
+    public function setStudent()
+    {
+        $this->type = 1;
+    }
+
     public function isManager()
     {
         return $this->type == 2;
+    }
+
+    public function setManage()
+    {
+        $this->type = 2;
     }
 
     public function isTeacher()
@@ -84,11 +94,25 @@ class User extends Authenticatable
         return $this->type == 3;
     }
 
+    public function setTeacher()
+    {
+        $this->type = 3;
+    }
+
     public function isOwner()
     {
         return $this->type == 4;
     }
 
+    public function setOwner()
+    {
+        $this->status = 4;
+    }
+
+    public function isAdmin()
+    {
+        return $this->status == 5;
+    }
     public function teacher()
     {
         return $this->hasOne('App\Teacher');

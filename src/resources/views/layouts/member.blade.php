@@ -6,6 +6,10 @@
                 @include('menu.member')
             @elseif(auth()->user()->isManager())
                 @include('menu.manager')
+            @elseif(auth()->user()->isTeacher())
+                @include('menu.teacher')
+            @elseif(auth()->user()->isAdmin())
+                @include('menu.admin')
             @endif
         </div>
         <div class="col s8">
