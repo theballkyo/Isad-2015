@@ -13,7 +13,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'first_name', 'last_name', 'email', 'password',
     ];
 
     /**
@@ -44,6 +44,7 @@ class User extends Authenticatable
     {
         return $this->hasOne('App\Enroll');
     }
+
     /**
      * Get all payments info
      *
@@ -52,11 +53,6 @@ class User extends Authenticatable
     public function payments()
     {
         return $this->hasMany('App\Payment');
-    }
-
-    public function teacher()
-    {
-        return $this->hasOne('App\Teacher');
     }
 
     public function getTextRole()
@@ -86,6 +82,31 @@ class User extends Authenticatable
     public function isTeacher()
     {
         return $this->type == 3;
+    }
+
+    public function isOwner()
+    {
+        return $this->type == 4;
+    }
+
+    public function teacher()
+    {
+        return $this->hasOne('App\Teacher');
+    }
+
+    public function manager()
+    {
+        return $this->hasOne('App\Manager');
+    }
+
+    public function owner()
+    {
+        return $this->hasOne('App\Owner');
+    }
+
+    public function student()
+    {
+        return $this->hasOne('App\Student');
     }
 
     public function hasCourse($id)

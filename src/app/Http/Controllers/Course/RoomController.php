@@ -21,6 +21,18 @@ class RoomController extends Controller
 
     }
 
+    public function getCreate()
+    {
+        return view('room.create');
+    }
+
+    public function getManage()
+    {
+        $rooms = Room::all();
+
+        return view('room.manage', compact('rooms'));
+    }
+
     public function getRoom(Request $request, $room_id)
     {
         $room = Room::find($room_id);

@@ -6,10 +6,13 @@ use App\CourseComponents\GetCourseDetail;
 use App\CourseComponents\GetCoursesWithOneUser;
 use App\Enroll;
 use App\Payment;
+use App\Room;
+use App\Teacher;
 use Auth;
 use App\Course;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateCourseRequest;
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
@@ -38,6 +41,12 @@ class CourseController extends Controller
         return view('course.index', ['courses' => $this->getCoursesWithOneUser($this->getUserId())]);
     }
 
+    public function getCourseManage()
+    {
+        $courses = Course::all();
+        return view('course.manage', compact('courses'));
+    }
+
     /**
      * Show form to create new course.
      *
@@ -45,7 +54,9 @@ class CourseController extends Controller
      */
     public function getCourseCreate()
     {
-        return view('course.create');
+        $teachers = Teacher::all();
+        $rooms = Room::all();
+        return view('course.create', compact('teachers', 'rooms'));
     }
 
     /**
@@ -55,26 +66,23 @@ class CourseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function postCourseCreate(Request $request)
+    public function postCourseCreate(CreateCourseRequest $request)
     {
-        $this->validate($request, [
-            //'title' => 'required|unique:posts|max:255',
-            //'body' => 'required',
-        ]);
+        // dd($request->all());
+        $course = new Course();
+        $course->fill($request->all());
+        $course->save();
 
-        $teacher = Teacher::where('teacher_id', '=', $request->teacher_id)->first();
+        foreach ($request->room_id as $room) {
 
-        if ($teacher == null) {
-            // error !?
+            $room = Room::find($room);
+            $course->rooms()->save($room);
+            // $course->save();
         }
 
-        $course = new Course;
-        // ...
+        $request->file('img')->move("imgs/courses/", $course->id . '.jpg');
 
-        $course->save();
-        $teacher->courses()->save($course);
-
-        return redirect()->action('CourseController@getCourse', ['course_id' => $course->id]);
+        return redirect()->action('Course\CourseController@getCourse', ['course_id' => $course->id]);
     }
 
     /**
@@ -109,8 +117,9 @@ class CourseController extends Controller
             $request->session()->flash('type__', 'course');
             return abort(404);
         }
-
-        return view('course.edit');
+        $teachers = Teacher::all();
+        $rooms = Room::all();
+        return view('course.edit', compact('course', 'teachers', 'rooms'));
     }
 
     /**
@@ -121,21 +130,18 @@ class CourseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function patchCourse(Request $request, $course_id)
+    public function patchCourse(CreateCourseRequest $request, $course_id)
     {
         $course = Course::find($course_id);
-        if ($course === null) {
-            $request->session()->flash('type__', 'course');
-            return abort(404);
+
+        $course->fill($request->all());
+        $course->save();
+        if ($request->room_id != null) {
+            $course->rooms()->sync($request->room_id);
         }
-
-        $this->validator($request);
-
-        $course = $this->mapCourse($request, $course_id);
-
         $course->save();
 
-        return view('course.edit', ['save' => true]);
+        return back()->with(['msg' => 'บันทึกข้อมูลเรียบร้อยแล้ว']);
     }
 
     /**

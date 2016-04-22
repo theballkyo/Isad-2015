@@ -103,10 +103,16 @@ class Enroll extends Model
         return $this->status == 1;
     }
 
+    public function setWait()
+    {
+        $this->status = 1;
+    }
+
     public function setCheck()
     {
         $this->status = 2;
     }
+
     /**
      * @return bool
      */
@@ -123,6 +129,16 @@ class Enroll extends Model
         return $this->status == 3;
     }
 
+    public function setApprove()
+    {
+        $this->status = 3;
+    }
+
+    /**
+     * Get Status as Text
+     *
+     * @return string
+     */
     public function getTextStatus()
     {
         switch ($this->status) {

@@ -4,7 +4,7 @@
     <li><a href="{{ url('/register') }}">สมัครสมาชิก</a></li>
 @else
     @if (Auth::user()->isManager())
-        <li><a href="{{ url('/') }}">เข้าสู่หน้าจัดการ</a></li>
+        <li><a href="{{ url('/manager') }}">เข้าสู่หน้าจัดการ</a></li>
     @elseif(Auth::user()->isStudent())
         <li><a href="{{ route('member') }}">ดูข้อมูลส่วนตัว</a></li>
     @elseif(auth()->user()->isTeacher())

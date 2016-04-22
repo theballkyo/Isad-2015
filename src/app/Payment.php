@@ -10,7 +10,7 @@ class Payment extends Model
 
     public function enroll()
     {
-        $this->belongsTo('App\Enroll');
+        return $this->belongsTo('App\Enroll');
     }
 
     public function isWait()
@@ -55,6 +55,11 @@ class Payment extends Model
             default:
                 return 'Unknown';
         }
+    }
+
+    public function scopeWait($query)
+    {
+        return $query->where('status', 1);
     }
 
     public function scopeOwner($query, $user_id)

@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col s4">
-        <img class="img-thumbnail" style="width: 100%" src="{{ asset("imgs/$course->img") }}"/>
+        <img class="img-thumbnail" style="width: 100%" src="{{ asset('imgs/courses/' . $course->id . '.jpg') }}"/>
     </div>
     <div class="col s8">
         <div class="card">

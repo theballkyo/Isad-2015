@@ -27,6 +27,19 @@ class PaymentController extends Controller
         return view('course.index', compact('courses', 'add_pay_btn'));
     }
 
+    public function getWait()
+    {
+        $payments = Payment::with('enroll', 'enroll.user', 'enroll.course')->wait()->get();
+
+        //dd($payments);
+
+        return view('payment.wait', compact('payments'));
+    }
+
+    /**
+     * @param $enroll_id
+     * @return mixed
+     */
     public function getPayment($enroll_id)
     {
         $enroll = $this->getEnrollWithLatestPayment($enroll_id);
@@ -82,8 +95,36 @@ class PaymentController extends Controller
         $enroll->setCheck();
         $enroll->save();
 
-        $request->file('img_file')->move("imgs/payments", $payment->id.'-');
+        $request->file('img_file')->move("imgs/payments/", $payment->id.'.jpg');
 
         return redirect("/course/" . $enroll->course->id)->with('msg', 'pay_send');
+    }
+
+    public function approve($payment_id)
+    {
+        $payment = Payment::findOrFail($payment_id);
+
+        $enroll = $payment->enroll;
+        $enroll->setApprove();
+        $enroll->save();
+
+        // dd($enroll);
+
+        $payment->setApprove();
+        $payment->save();
+
+        return back()->with('msg', 'อัพเดทสถานะเรียบร้อยแล้ว');
+    }
+
+    public function reject($payment_id)
+    {
+        $payment = Payment::findOrFail($payment_id)->load('enroll');
+
+        $payment->enroll->setWait();
+        $payment->enroll->save();
+
+        $payment->setReject();
+        $payment->save();
+        return back()->with('msg', 'อัพเดทสถานะเรียบร้อยแล้ว');
     }
 }

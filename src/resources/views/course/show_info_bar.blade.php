@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-image">
-        <img class="img-thumbnail" style="width: 100%" src="{{ asset("imgs/$course->img") }}"/>
+        <img class="img-thumbnail" style="width: 100%" src="{{ asset('imgs/courses/' . $course->id . '.jpg') }}"/>
     </div>
     <div class="card-content">
         <p>{{ $course->description }}</p>

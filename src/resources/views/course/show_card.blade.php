@@ -2,7 +2,7 @@
     <div class="col s12 m4">
         <div class="card">
             <div class="card-image">
-                <img src="{{ asset("imgs/$course->img") }}">
+                <img src="{{ asset('imgs/courses/' . $course->id . '.jpg') }}">
             </div>
             <div class="card-content">
                 <span class="card-title activator grey-text text-darken-4">{{ $course->title }}</span>
