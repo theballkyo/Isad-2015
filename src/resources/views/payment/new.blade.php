@@ -4,26 +4,36 @@
     <div class="row">
         <div class="col s8">
             <h4>แจ้งชำระเงิน</h4>
-            <form class="col s12" action="{{ url('/payment') }}" method="post">
+            @if (count($errors) > 0)
+                <p>
+                <ul class="collection">
+                    @foreach ($errors->all() as $error)
+                        <li class="collection-item red accent-3 white-text">{{ $error }}</li>
+                    @endforeach
+                </ul>
+                </p>
+            @endif
+            <form class="col s12" action="{{ url('/payment') }}" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="enroll_id" value="{{ $enroll_id }}">
                 <div class="row">
                     <div class="input-field col s12">
                         <i class="material-icons prefix">account_circle</i>
                         <input name="bank" id="icon_prefix" type="text">
-                        <label for="bank">ธนาคาร</label>
+                        <label for="bank">โอนเข้าธนาคาร *</label>
                     </div>
                     <div class="input-field col s12">
-                        <i class="material-icons prefix">account_circle</i>
-                        <input name="pay_time" id="icon_prefix" type="text">
-                        <label for="pay_time">วันที่/เวลา โอนเงิน</label>
+                        <span class="flow-text">วันที่/เวลาโอนเงิน</span>
+                        <input class="datetimepicker" data-inline="true" data-enabletime="true" data-time_24hr="true" name="pay_time" id="icon_prefix" type="hidden">
                     </div>
+
                     <div class="file-field input-field col s12">
                         <div class="btn">
                             <span>File</span>
-                            <input type="file">
+                            <input name="img_file" type="file">
                         </div>
                         <div class="file-path-wrapper">
-                            <input class="file-path validate" type="text" placeholder="เลือกรูปภาพหลักฐานการชำระเงิน">
+                            <input name="img_name" class="file-path validate" type="text"
+                                   placeholder="เลือกรูปภาพหลักฐานการชำระเงิน *">
                         </div>
                     </div>
                     <div class="input-field col s12">
@@ -40,43 +50,14 @@
             </form>
         </div>
         <div class="col s4">
-            @if (count($errors) > 0)
-                <p>
-                <ul class="collection">
-                    @foreach ($errors->all() as $error)
-                        <li class="collection-item red accent-3 white-text">{{ $error }}</li>
-                    @endforeach
-                </ul>
-                </p>
-            @endif
-                <div class="card">
-                    <div class="card-image">
-                        <img class="img-thumbnail" style="width: 100%" src="{{ asset("imgs/$course->img") }}"/>
-                    </div>
-                    <div class="card-content">
-                        <p>{{ $course->description }}</p>
-                    </div>
-                    <div class="card-action">
-                        อาจารย์ <a class="btn blue"
-                                   href="#">{{ $course->teacher->user->first_name }} {{ $course->teacher->user->last_name }}</a><br/>
-                        ประเภทคอร์ส: <a class="btn blue-grey" href="#">{{ $course->getTextCourseType() }}</a><br/>
-                        ห้องเรียน:
-                        <ul class="ul-room">
-
-                            @if($course->rooms->count() < 1)
-                                <li>ไม่พบข้อมูลห้องเรียน</li>
-                            @endif
-                            @foreach($course->rooms as $room)
-                                <li class=""><a class="btn orange" href="#">{{ $room->title }}</a></li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    <div class="card-action">
-                        ราคา: {{ $course->price }} บาท || จำนวนการลงทะเบียนเรียน {{ $course->users->count() }}
-                        / {{ $course->max_user }} คน
-                    </div>
-                </div>
+            @include('course.show_info_bar')
         </div>
     </div>
 
+@endsection
+@section('script')
+    <script src="{{ asset('js/flatpickr.min.js') }}"></script>
+    <script>
+        flatpickr('.datetimepicker', { dateFormat: 'Y-m-d H:i', maxDate: new Date() + 1});
+    </script>
 @endsection

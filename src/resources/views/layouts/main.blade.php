@@ -8,43 +8,54 @@
     <!-- CSS  -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="{{ asset('css/materialize.css') }}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link href="{{ asset('css/sweetalert.css') }}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/flatpickr.min.css') }}">
+    <link href="{{ asset('css/jquery.seat-charts.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/style.css') }}" type="text/css" rel="stylesheet" media="screen,projection"/>
 </head>
 <body>
 <nav class="pink accent-2" role="navigation">
     <div class="nav-wrapper container"><a id="logo-container" href="{{ url('/') }}" class="brand-logo">School</a>
         <ul class="right hide-on-med-and-down">
-            @if (Auth::guest())
-                <li><a href="{{ url('/login') }}">Login</a></li>
-                <li><a href="{{ url('/register') }}">Register</a></li>
-            @else
-                @if (Auth::user()->isManager())
-                    <li><a href="{{ url('/') }}">เข้าสู่หน้าจัดการ</a></li>
-                @elseif(Auth::user()->isStudent())
-                    <li><a href="{{ url('/') }}">ดูข้อมูลส่วนตัว</a></li>
-                @elseif(auth()->user()->isTeacher())
-                    <li><a href="{{ url('/') }}">เข้าสู่หน้าจัดการ</a> </li>
-                    <li><a href="{{ url('/') }}">ดูตารางสอน</a></li>
-                @endif
-                <li><a href="#" class="dropdown-button"
-                       data-activates='user_info'>ยินดีต้อนรับ {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
-                        [{{ Auth::user()->getTextRole() }}]</a></li>
-                <!-- Dropdown Structure -->
-                <ul id='user_info' class='dropdown-content'>
-                    <li><a href="{{ url('/logout') }}">ออกจากระบบ</a></li>
-                </ul>
+            @include('layouts.nav_header')
+            @if(auth()->check())
+            <li><a href="#" class="dropdown-button" data-activates='user_info'>ยินดีต้อนรับ {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
+                    [{{ Auth::user()->getTextRole() }}]</a></li>
             @endif
         </ul>
 
         <ul id="nav-mobile" class="side-nav">
-            <li><a href="{{ url('/login') }}">เข้าสู่ระบบ</a></li>
-            <li><a href="{{ url('/register') }}">สมัครสมาชิก</a></li>
+            @include('layouts.nav_header')
+            @if(auth()->check())
+            <li><a href="#" class="dropdown-button" data-activates='user_info2'>ยินดีต้อนรับ {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
+                    [{{ Auth::user()->getTextRole() }}]</a></li>
+            @endif
         </ul>
         <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
     </div>
 </nav>
+<div class="content">@yield('header')</div>
+<div id="loading" class="container center-align">
+    <br><br>
+    <div class="preloader-wrapper big active">
+        <div class="spinner-layer spinner-blue-only">
+            <div class="circle-clipper left">
+                <div class="circle"></div>
+            </div>
+            <div class="gap-patch">
+                <div class="circle"></div>
+            </div>
+            <div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="section no-pad-bot" id="index-banner">
-    <div class="container">
+    <div class="content container">
+        @if(url()->full() != url(''))
+        @include('layouts.breadcrumbs')
+        @endif
         @yield('content')
     </div>
 </div>
@@ -91,9 +102,47 @@
 
 
 <!--  Scripts-->
-<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script>SITE_URL = '{{ url('/') }}/';TOKEN = '{!! csrf_token() !!}';</script>
+<script src="{{ asset('js/jquery-2.1.1.min.js') }}"></script>
 <script src="{{ asset('js/materialize.js') }}"></script>
 <script src="{{ asset('js/init.js') }}"></script>
+<script src="{{ asset('js/sweetalert.min.js') }}"></script>
+<script src="{{ asset('js/jquery.seat-charts.min.js') }}"></script>
+<script src="{{ asset('js/site.js') }}"></script>
+    @if (count($errors) > 0)
+        <script>
+    var message = '';
+    @foreach ($errors->all() as $error)
+            message += "<p>{{ $error }}</p>";
+    @endforeach
+    $(document).ready(function () {
+        swal({
+            title: "ผิดพลาด!",
+            text: message,
+            html: true,
+            type: 'error'
+        });
+    });
+        </script>
+    @endif
+    @if(session('msg'))
+        <script>
+        $(document).ready(function () {
+        swal({
+        title: "ข้อความ",
+        text: '{{ session('msg') }}',
+        html: true,
+        type: 'success',
+        });
+        });
+        </script>
+    @endif
+@yield('script')
+<script>
+    $(document).ready(function() {
+       @yield('script_ready')
+    });
+</script>
 
 </body>
 </html>

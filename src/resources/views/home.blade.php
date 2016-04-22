@@ -1,5 +1,11 @@
 @extends('layouts.main')
 
+@section('header')
+    <div class="parallax-container">
+        <div class="parallax"><img src="imgs/home.jpg"></div>
+    </div>
+@endsection
+
 @section('content')
     <br><br>
     <h1 class="header center orange-text">Starter School System</h1>

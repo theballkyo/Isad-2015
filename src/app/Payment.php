@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Payment extends Model
 {
+    public $timestamps = false;
+
     public function enroll()
     {
         $this->belongsTo('App\Enroll');
@@ -39,6 +41,20 @@ class Payment extends Model
     public function setApprove()
     {
         $this->status = 3;
+    }
+
+    public function getTextStatus()
+    {
+        switch ($this->status) {
+            case 1:
+                return 'รอการตรวจสอบ';
+            case 2:
+                return 'ข้อมูลไม่ถูกต้อง';
+            case 3:
+                return 'ข้อมูลถูกต้อง';
+            default:
+                return 'Unknown';
+        }
     }
 
     public function scopeOwner($query, $user_id)

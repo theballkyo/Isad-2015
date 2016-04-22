@@ -21,7 +21,7 @@ trait GetCoursesWithOneUser
             $query->owner($user_id);
         }, 'enroll.payment' => function ($query) {
             $query->latest();
-        }]);
+        }, 'users']);
         return $courses;
     }
 }

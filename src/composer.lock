@@ -4,7 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c284a9c122da36c99a8b6597bdce7aa6",
+    "hash": "49dbf589b25d20954f1828b5a0676c5f",
+    "content-hash": "8fc96b8876f7dff6c194e83dbedbcdd8",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -735,6 +736,58 @@
                 "php"
             ],
             "time": "2016-02-28 19:48:28"
+        },
+        {
+            "name": "okvee/thai-date",
+            "version": "v2.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/OkveeNet/thai-date.git",
+                "reference": "c1df4d1bbd146b82295296dc3247cef7e9695a83"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/OkveeNet/thai-date/zipball/c1df4d1bbd146b82295296dc3247cef7e9695a83",
+                "reference": "c1df4d1bbd146b82295296dc3247cef7e9695a83",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "suggest": {
+                "rundiz/thai-date": "Please change from Okvee\\Thaidate to Rundiz\\Thaidate."
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Okvee\\Thaidate\\": "Okvee/Thaidate"
+                },
+                "files": [
+                    "Okvee/Thaidate/thaidate-functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Vee W.",
+                    "email": "kawewong@gmail.com",
+                    "homepage": "http://okvee.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "display date in Thai language use PHP date() and strftime(). Moved to https://packagist.org/packages/rundiz/thai-date",
+            "keywords": [
+                "Thai date",
+                "date",
+                "date thai",
+                "date translation",
+                "datethai",
+                "thaidate"
+            ],
+            "time": "2016-04-14 09:51:55"
         },
         {
             "name": "paragonie/random_compat",

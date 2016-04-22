@@ -6,6 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Course extends Model
 {
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'title', 'description', 'img', 'price', 'max_user', 'is_open', 'type', 'teacher_id',
+    ];
+
     public function rooms()
     {
         return $this->belongsToMany('App\Room');

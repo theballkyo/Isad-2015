@@ -15,4 +15,9 @@ class Room extends Model
     {
         return $this->hasOne('App\Seat');
     }
+
+    public function seatBook()
+    {
+        return $this->hasMany('App\SeatBook');
+    }
 }

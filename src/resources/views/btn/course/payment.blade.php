@@ -1,0 +1,1 @@
+<a href="{{ url("/payment/$id/new") }}" class="btn-large waves-effect waves-light purple col s12">แจ้งชำระเงิน</a>

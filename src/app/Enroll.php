@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Enroll extends Model
 {
+    public $timestamps = false;
+
     /**
      * Enroll status column detail
      * 1 is enrolled and wait for payment
@@ -48,6 +50,16 @@ class Enroll extends Model
         return $this->belongsTo('App\Course');
     }
 
+    public function seatBook()
+    {
+        return $this->hasOne('App\SeatBook');
+    }
+
+    public function seatBooks()
+    {
+        return $this->hasMany('App\SeatBook');
+    }
+
     /**
      * @param $query
      * @return mixed
@@ -66,6 +78,15 @@ class Enroll extends Model
         return $query->where('status', 1);
     }
 
+    public function scopeApprove($query)
+    {
+        return $query->where('status', 3);
+    }
+
+    public function scopeCheck($query)
+    {
+        return $query->whereStatus(2);
+    }
     /**
      * @return bool
      */
@@ -82,6 +103,10 @@ class Enroll extends Model
         return $this->status == 1;
     }
 
+    public function setCheck()
+    {
+        $this->status = 2;
+    }
     /**
      * @return bool
      */
@@ -98,4 +123,17 @@ class Enroll extends Model
         return $this->status == 3;
     }
 
+    public function getTextStatus()
+    {
+        switch ($this->status) {
+            case 1:
+                return 'รอการแจ้งชำระเงิน';
+            case 2:
+                return 'รอเจ้าหน้าที่ตรวจสอบการชำระเงิน';
+            case 3:
+                return 'ชำระเงินเรียบร้อยแล้ว';
+            default:
+                return 'Unknown';
+        }
+    }
 }

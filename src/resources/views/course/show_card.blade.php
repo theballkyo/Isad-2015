@@ -1,37 +1,33 @@
 @foreach($courses as $course)
     <div class="col s12 m4">
-    <div class="card">
-        <div class="card-image">
-            <img src="{{ asset("imgs/$course->img") }}">
-            <span class="card-title z-depth-1 col s12 grey-text">{{ $course->title }}</span>
-        </div>
-        <div class="card-content">
-            <p>{{ $course->description }}</p>
-        </div>
-        <div class="card-action">
-            อาจารย์: <a href="#">{{ $course->teacher->user->first_name }} {{ $course->teacher->user->last_name }}</a>
-            ประเภทคอร์ส: <a href="#">{{ $course->getTextCourseType() }}</a>
-        </div>
-        @if(auth()->guest())
-            <a href="{{ action('Course\CourseController@getCourse', ['course_id' => $course->id]) }}"
-               class="btn-large waves-effect waves-light orange col s12">ลงทะเบียนเรียนเลย</a>
-        @elseif(auth()->user()->isStudent())
-            @if($course->enroll != null)
-                @if($course->enroll->isApprove())
-                    <a href="{{ action('Course\CourseController@getCourse', ['course_id' => $course->id]) }}" class="btn-large waves-effect waves-light light-green col s12">ชำระเงินเรียนร้อยแล้ว</a>
-                @elseif($course->enroll->isCheck())
-                    <a href="{{ action('Course\CourseController@getCourse', ['course_id' => $course->id]) }}" class="btn-large waves-effect waves-light light-blue col s12">กำลังตรวจสอบการชำระเงิน</a>
-                @elseif($course->enroll->isWait())
-                    <a href="{{ action('Payment\PaymentController@newPayment', ['course_id' => $course->enroll->id]) }}" class="btn-large waves-effect waves-light purple col s12">แจ้งชำระเงิน</a>
+        <div class="card">
+            <div class="card-image">
+                <img src="{{ asset("imgs/$course->img") }}">
+            </div>
+            <div class="card-content">
+                <span class="card-title activator grey-text text-darken-4">{{ $course->title }}</span>
+                @if($course->enroll != null)
+                    <span class="badge">{{ $course->enroll->getTextStatus() }}</span>
                 @endif
-            @else
-                <a href="{{ action('Course\CourseController@getCourse', ['course_id' => $course->id]) }}"
-                   class="btn-large waves-effect waves-light orange col s12">ลงทะเบียนเรียนเลย</a>
-            @endif
-        @elseif(auth()->user()->isManager())
-        <a class="btn-large waves-effect waves-light deep-purple col s12" href="#">จัดการคอร์สเรียน</a>
-        @endif
-    </div>
+                <p class="grey-text">{{ $course->description }} :: {{$course->id}}</p>
+            </div>
+            <div class="card-action">
+                {{ trans('course.period') }} {{ thaidate('d F Y', strtotime($course->start_at))  }} - {{ thaidate('d F Y', strtotime($course->end_at)) }}
+            </div>
+            <div class="card-action">
+                อาจารย์: <a href="#">{{ $course->teacher->user->first_name }} {{ $course->teacher->user->last_name }}</a>
+                ประเภทคอร์ส: <a href="#">{{ $course->getTextCourseType() }}</a>
+            </div>
 
-</div>
+            <a href="{{ action('Course\CourseController@getCourse', ['course_id' => $course->id]) }}"
+               class="btn-large waves-effect waves-light orange col s12">ดูรายละเอียดเพิ่มเติม</a>
+            @if(isset($add_pay_btn))
+                <div class="row">
+                    <div class="col s6">@include('btn.course.payment', ['id' => $course->enroll->id])</div>
+                    <div class="col s6">@include('btn.course.delete', ['id' => $course->id])</div>
+                </div>
+            @endif
+        </div>
+
+    </div>
 @endforeach

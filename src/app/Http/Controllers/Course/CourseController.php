@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Course;
 use App\CourseComponents\GetCourseDetail;
 use App\CourseComponents\GetCoursesWithOneUser;
 use App\Enroll;
+use App\Payment;
 use Auth;
 use App\Course;
 use App\Http\Requests;
@@ -86,8 +87,11 @@ class CourseController extends Controller
      */
     public function getCourse(Request $request, $course_id)
     {
-        $request->session()->flash('msg', 11);
-        return view('course.show', ['course' => $this->getCourseDetail($course_id, $this->getUserId())]);
+        $course = $this->getCourseDetail($course_id, $this->getUserId());
+        if ($course->enroll) {
+            $payments = $course->enroll->payments;
+        }
+        return view('course.show', compact('course', 'payments'));
     }
 
     /**
@@ -172,11 +176,12 @@ class CourseController extends Controller
         }
 
         if ($course->users->count() >= $course->max_user) {
-            $request->session()->flash('error', 'คอร์สนี้เต็มแล้ว');
+            $request->session()->flash('error', 'max');
             return redirect('course/' . $course_id);
         } else {
             $request->user()->courses()->attach($course_id);
-            return redirect()->action('Course\CourseController@getCourse', ['course_id' => $course_id])->with('msg', 'max');
+            return redirect()->action('Course\CourseController@getCourse', ['course_id' => $course_id])
+                ->with('msg', trans('course.enrolled'));
         }
     }
 
@@ -190,13 +195,33 @@ class CourseController extends Controller
      */
     public function deleteEnroll(Request $request, $course_id)
     {
-        if ($request->user()->hasCourse($course_id)) {
-            return dd('Errer, enrolled');
+        //$course = $request->user()->courses();
+        $enroll = $request->user()->enroll()->where('course_id', $course_id)->first();
+        //dd($enroll);
+        if ($enroll == null || $enroll->isApprove()) {
+            return dd('Errer, not enrolled');
         }
+
+        Payment::where('enroll_id', $enroll->id)->delete();
 
         $request->user()->courses()->detach($course_id);
 
+        if ($request->ajax()) {
+            return "ok";
+        }
+
         return redirect()->action('Course\CourseController@index');
+    }
+
+    public function showEnroll(Request $request, $enroll_id)
+    {
+        $e = $request->user()->load(['enroll' => function ($q) use ($enroll_id) {
+            $q->where('id', '=', $enroll_id);
+        }]);
+        if ($e->enroll == null) {
+            return dd('Errer, enrolled');
+        }
+        return view('course.enroll.show', ['course' => $e->enroll->course, 'payments' => $e->enroll->payments]);
     }
 
     /**
@@ -208,11 +233,17 @@ class CourseController extends Controller
      */
     public function getEnroll(Request $request)
     {
-        $courses = Course::whereHas('users', function ($query) {
-            $query->where('users.id', auth()->user()->id);
-        })->get();
+        $enrolls = $request->user()->enrolls();
+        if (!is_null($request->ok)) {
+            $enrolls->approve();
+        } else if (!is_null($request->wait)) {
+            $enrolls->waitForPayment();
+        } else if (!is_null($request->check)) {
+            $enrolls->check();
+        }
+        $enrolls = $enrolls->with('course')->get();
 
-        return view('course.index', ['courses' => $courses]);
+        return view('course.member.table', compact('enrolls'));
     }
 
     /**

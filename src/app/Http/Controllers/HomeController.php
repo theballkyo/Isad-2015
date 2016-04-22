@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Course;
-use App\CourseComponents\GetCoursesWithOneUser;
+use App\CourseComponents\GetAvailableCourses;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    use GetCoursesWithOneUser;
+    use GetAvailableCourses;
     /**
      * Create a new controller instance.
      *
@@ -27,6 +27,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home', ['courses' => $this->getCoursesWithOneUser($this->getUserId())]);
+        return view('home', ['courses' => $this->getAvailableCourses($this->getUserId())]);
     }
 }

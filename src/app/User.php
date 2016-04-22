@@ -40,6 +40,10 @@ class User extends Authenticatable
         return $this->hasMany('App\Enroll');
     }
 
+    public function enroll()
+    {
+        return $this->hasOne('App\Enroll');
+    }
     /**
      * Get all payments info
      *

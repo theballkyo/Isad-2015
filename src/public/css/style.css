@@ -25,3 +25,18 @@
 .ul-room > li:last-child {
     margin-right: 0;
 }
+.content {
+    display: none;
+}
+.card .card-image img {
+    height: 400px;
+}
+div.unvailable {
+    background-color: red;
+}
+
+div.seatCharts-cell {
+    width: 40px;
+    height: 40px;
+    line-height: 3;
+}
