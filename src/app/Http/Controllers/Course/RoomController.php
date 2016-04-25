@@ -86,6 +86,7 @@ class RoomController extends Controller
             $enroll = $course->enroll()->where('user_id', auth()->user()->id)->first();
             if ($enroll != null) {
                 $seat = $room->seatBook->where('enroll_id', $enroll->id)->first();
+                dd($room->seatBook);
                 if ($seat != null) {
                     $seat_own = $seat->seat_name;
                 }
