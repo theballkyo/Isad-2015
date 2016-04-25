@@ -21,9 +21,8 @@ trait GetAvailableCourses
      */
     public function getAvailableCourses($user_id = null)
     {
-        $courses = Course::open()->where('start_at', '<', Carbon::today());
-        if ($user_id) {
-
+        $courses = Course::open()->where('start_at', '>=', Carbon::today()->subDay(2));
+        if ($user_id != null) {
             $courses->whereDoesntHave('users', function ($q) use ($user_id) {
                 $q->where('users.id', $user_id);
             });
@@ -32,7 +31,7 @@ trait GetAvailableCourses
                 $q->owner($user_id);
             }]);
         }
-        return $courses->get();
+        return $courses;
     }
 
 }

@@ -11,7 +11,7 @@
 |
  */
 Route::get('/', 'HomeController@index');
-
+Route::get('/course/available', 'Course\CourseController@getAvail');
 
 Route::group(['namespace' => 'Payment'], function () {
 
@@ -54,6 +54,7 @@ Route::group(['namespace' => 'Course'], function () {
 
     Route::post('/enroll/{course_id}', 'CourseController@postEnroll');
     Route::get('/enroll/{enroll_id}', 'CourseController@showEnroll');
+    Route::post('/enroll/{enroll_id}/delete', 'CourseController@deleteEnroll');
     Route::get('/enroll', 'CourseController@getEnroll');
 
 });
@@ -72,6 +73,22 @@ Route::group(['namespace' => 'Member'], function () {
     Route::get('/member/{user_id}/edit', 'MemberController@getEdit');
     Route::post('/member/{user_id}/edit', 'MemberController@postEdit');
     Route::get('/member/{user_id}/delete', 'MemberController@getDelete');
+
+    Route::group(['middleware' => 'admin'], function () {
+        Route::get('/teacher/manage', 'MemberController@getTeacherManage');
+        Route::get('/teacher/create', 'MemberController@getTeacherCreate');
+        Route::post('/teacher/create', 'MemberController@postTeacherCreate');
+        Route::get('/teacher/{teacher_id}/delete', 'MemberController@deleteTeacher');
+        Route::get('/teacher/{teacher_id}/edit', 'MemberController@editTeacher');
+        Route::post('/teacher/{teacher_id}/edit', 'MemberController@saveTeacher');
+
+        Route::get('/manager/manage', 'MemberController@getManagerManage');
+        Route::get('/manager/create', 'MemberController@getManagerCreate');
+        Route::post('/manager/create', 'MemberController@postManagerCreate');
+        Route::get('/manager/{manager_id}/delete', 'MemberController@deleteManager');
+        Route::get('/manager/{teacher_id}/edit', 'MemberController@editManager');
+        Route::post('/manager/{teacher_id}/edit', 'MemberController@saveManager');
+    });
 
 
 });

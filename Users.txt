@@ -1,0 +1,21 @@
+Student
+user: student@ezdev.me
+pass: 123456
+
+user: student2@ezdev.me
+pass: 123456
+
+Teacher:
+user: teacher@ezdev.me
+pass: 123456
+
+user: rag@ezdev.me
+pass: 123456
+
+Manager
+user: manager@ezdev.me
+pass: 123456
+
+Admin
+user: admin@ezdev.me
+pass: 123456

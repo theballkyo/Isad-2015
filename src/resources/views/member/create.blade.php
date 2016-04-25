@@ -29,11 +29,11 @@
                 <label for="address">ที่อยู่</label>
             </div>
             <div class="input-field col s6">
-                <input placeholder="รหัสผ่าน" type="text" name="password" id="password">
+                <input placeholder="รหัสผ่าน" type="password" name="password" id="password">
                 <label for="password">รหัสผ่าน</label>
             </div>
             <div class="input-field col s6">
-                <input placeholder="ยืนยันรหัสผ่าน" type="text" name="password_confirmation" id="password_confirmation">
+                <input placeholder="ยืนยันรหัสผ่าน" type="password" name="password_confirmation" id="password_confirmation">
                 <label for="password_confirmation">ยืนยันรหัสผ่าน</label>
             </div>
             <button class="btn-large blue waves-light waves-effect">เพิ่มผู้เรียนใหม่</button>

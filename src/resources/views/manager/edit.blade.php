@@ -1,7 +1,7 @@
 @extends('layouts.member')
 
 @section('member_content')
-    <h3>แก้ไขข้อมูลผู้เรียน</h3>
+    <h3>แก้ไขข้อมูลผู้จัดการ</h3>
     <form class="col s12" method="post">
         <div class="row">
             <div class="input-field col s4">
@@ -36,7 +36,7 @@
                 <input placeholder="ยืนยันรหัสผ่าน" type="text" name="password_confirmation" id="password_confirmation">
                 <label for="password_confirmation">ยืนยันรหัสผ่าน</label>
             </div>
-            <button class="btn-large blue waves-light waves-effect">แก้ไขข้อมูลผู้เรียน</button>
+            <button class="btn-large blue waves-light waves-effect">แก้ไขข้อมูลผู้จัดการ</button>
         </div>
         {!! csrf_field() !!}
     </form>

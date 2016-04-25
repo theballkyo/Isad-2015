@@ -16,7 +16,7 @@ class RoomController extends Controller
     {
         $this->middleware('auth', ['except' => ['viewCourseRoom', 'getRoom']]);
         $this->middleware('manager', ['only' => ['getCreate', 'getManage', 'getRoomEdit', 'postRoomEdit', 'postCreate', 'getRoomDelete']]);
-        $this->middleware('student', ['only' => ['saveSeat', 'deleteSeat']]);
+        $this->middleware('student', ['only' => ['saveSeat', 'deleteSeat', 'viewCourseRoom']]);
     }
 
     public function index()
@@ -40,7 +40,7 @@ class RoomController extends Controller
     {
         $room = Room::find($room_id);
 
-        return view('room.view', compact('room'));
+        return view('room.show', compact('room'));
     }
 
     public function getRoomEdit($room_id)

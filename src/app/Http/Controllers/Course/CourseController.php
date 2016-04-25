@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Course;
 
 use App\CourseComponents\GetCourseDetail;
 use App\CourseComponents\GetCoursesWithOneUser;
+use App\CourseComponents\GetAvailableCourses;
 use App\Enroll;
 use App\Payment;
 use App\Room;
@@ -17,7 +18,7 @@ use Illuminate\Http\Request;
 
 class CourseController extends Controller
 {
-    use GetCoursesWithOneUser, GetCourseDetail;
+    use GetCoursesWithOneUser, GetCourseDetail, GetAvailableCourses;
 
     /**
      * Create a new controller instance.
@@ -26,10 +27,15 @@ class CourseController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('student', ['except' => ['index', 'getCourse']]);
+        $this->middleware('auth', ['except' => ['index', 'getCourse']]);
         $this->middleware('manager', ['only' => ['getCourseCreate', 'postCourseCreate', 'getCourseEdit',
             'patchCourse', 'getCourseDelete', 'deleteCourse', 'getCourseManage']]);
-        //$this->middleware('member', ['only' => []]);
+
+    }
+
+    public function getAvail()
+    {
+        return view('course.index', ['courses' => $this->getAvailableCourses($this->getUserId())->get()]);
     }
 
     /**
@@ -83,6 +89,7 @@ class CourseController extends Controller
         $course = new Course();
         $course->fill($request->all());
         $course->on_day = $on_day;
+        $course->is_open = 1;
         $course->save();
 
         foreach ($request->room_id as $room) {
@@ -96,7 +103,7 @@ class CourseController extends Controller
             $request->file('img')->move("imgs/courses/", $course->id . '.jpg');
         }
 
-        return redirect()->action('Course\CourseController@getCourse', ['course_id' => $course->id]);
+        return redirect('/manager')->with(['msg' => 'สร้างคอร์สสำเร็จแล้ว']);
     }
 
     /**

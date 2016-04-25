@@ -3,6 +3,7 @@
 @section('content')
 
     <div id='calendar'></div>
+    <p class="flow-text">*ตารางของวันที่ {{ \Carbon\Carbon::today()->toDateString() }} - {{ \Carbon\Carbon::today()->addDay(10)->toDateString() }}</p>
 @endsection
 @section('script')
     @parent

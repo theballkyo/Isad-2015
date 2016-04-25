@@ -64,6 +64,10 @@ class User extends Authenticatable
                 return "ผู้ดูแลห้องเรียน";
             case 3:
                 return "อาจารย์";
+            case 4:
+                return 'เจ้าของสถาบัน';
+            case 5:
+                return 'ผู้ดูแลระบบ';
             default:
                 return "unknown";
         }
@@ -111,7 +115,7 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        return $this->status == 5;
+        return $this->type == 5;
     }
     public function teacher()
     {

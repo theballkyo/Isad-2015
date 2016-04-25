@@ -65,5 +65,6 @@ class Kernel extends HttpKernel
         'manager' => \App\Http\Middleware\ManagerCheck::class,
         'owner' => \App\Http\Middleware\OwnerCheck::class,
         'student' => \App\Http\Middleware\StudentCheck::class,
+        'can_manage' => \App\Http\Middleware\CanManage::class,
     ];
 }

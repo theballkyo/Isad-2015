@@ -20,7 +20,7 @@
                         เข้าสู่ระบบ
                         <i class="material-icons right">send</i>
                     </button>
-                    <a href="{{ url('/register') }}" class="col s3 offset-s9 btn waves-effect waves-light green right">หรือสมัครสมาชิกได้ที่นี้</a>
+                    <a href="{{ url('/register') }}" class="col s3 offset-s9 btn-flat right">หรือสมัครสมาชิกได้ที่นี้</a>
                 </div>
                 {!! csrf_field() !!}
             </form>

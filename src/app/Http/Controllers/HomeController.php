@@ -30,7 +30,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home', ['courses' => $this->getAvailableCourses($this->getUserId())]);
+        return view('home', ['courses' => $this->getAvailableCourses($this->getUserId())->take(6)->get()]);
     }
 
     public function timetable()
